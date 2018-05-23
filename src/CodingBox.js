@@ -48,7 +48,7 @@ class CodingBox extends Component {
               <center><div id="challenge-text">{context.challengePrompt}</div></center>
               <CodeMirrorApp
                 submitTest={context.submitTest}
-                startingCode={context.startingCode}
+                startingCode={context.startingCode} 
                 challengeResponseText={context.challengeResponseText}/>
             </div>
             )

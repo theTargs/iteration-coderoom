@@ -38,6 +38,7 @@ class ButtonContainer extends Component {
               <Button btnLabel={context.nightstandBtn.text} onClick={context.goToNightstand} disabled={context.nightstandBtn.disabled}/>
               <Button btnLabel={context.bedBtn.text} onClick={context.goToBed} disabled={context.bedBtn.disabled}/>
               {bossBtnVisible}
+              {/*<Button btnLabel={context.pauseBtn.text} onClick={context.timerPause}/> TIMER PAUSE BUTTON FOR TESTING */}
             </div>
           )}}
       </DM.Consumer>

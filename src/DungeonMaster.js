@@ -80,14 +80,22 @@ class DungeonMaster extends Component {
         this.setState({timerOn: true});
         seconds++;
       },
-      timer: () => {
-        setTimeout(() => {this.state.incrementTime(); this.state.timer()}, 1000);
-        console.log(seconds);
+      timerStart: () => {
+        this.timeoutID = window.setTimeout(() => {this.state.incrementTime(); this.state.timerStart()}, 1000);
+        console.log(seconds); 
+        this.setState({seconds: seconds}); 
       },
+
       Timer: () => {
-        this.state.seconds = this.state.timer();
-        
+        this.state.timerStart();    
       },
+
+      timerPause: () => {
+        this.setState({timerOn: false});
+        window.clearTimeout(this.timeoutID);
+        console.log('pause pressed', this.state.seconds);
+      },
+
       text: {
         introText:
           "You wake up to find yourself in a dimly lit room. Wondering where you are you start to explore your small surroundings...",
@@ -112,6 +120,7 @@ class DungeonMaster extends Component {
       nightstandBtn: {disabled: false, text: 'Open Nightstand Drawer'},
       bedBtn: {disabled: false, text: 'Look Under Bed'},
       bossBtn: {disabled: false, text: 'Challenge Boss'},
+      pauseBtn: {disabled: false, text: 'Pause timer'},
             
 
       goToDesk: () => {
@@ -203,8 +212,10 @@ class DungeonMaster extends Component {
         this.state.activeNarrative.unshift(this.state.bossDefeatText);
         // we also need to redirect the player to the winner screen
 
-        //total time
-        this.setState({totalTime: seconds}); //stop timer and log!!!
+        //total time - pause the timer, which will update the state
+        this.state.timerPause();
+        //update state.totalTime --> is this necessary?
+        this.setState({totalTime: seconds});
         console.log(this.state.totalTime);
       },
       toggleHidden: function() {
@@ -212,10 +223,7 @@ class DungeonMaster extends Component {
       },
       challengeActive: true,
       challengePrompt: "",
-      startingCode: `const findInArray = (arr, elem) => {
-// your code here
-
-}`,
+      
       
       challengeResponseText: "",
 
@@ -224,11 +232,12 @@ class DungeonMaster extends Component {
         // console.log(myWorker);
         if (this.state.gameStarted)
           myWorker.postMessage({ code: code, challenge: 1 });
-      }
+      },
     };
 
     this.state.incrementTime = this.state.incrementTime.bind(this);
-    this.state.timer = this.state.timer.bind(this);
+    this.state.timerStart = this.state.timerStart.bind(this);
+    this.state.timerPause = this.state.timerPause.bind(this);
     this.state.Timer = this.state.Timer.bind(this);
     this.state.goToDesk = this.state.goToDesk.bind(this);
     this.state.goToBed = this.state.goToBed.bind(this);
