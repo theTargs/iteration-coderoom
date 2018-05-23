@@ -6,6 +6,7 @@ import Inventory from "./Inventory";
 import { DungeonMaster } from "./DungeonMaster";
 import Login from "./login";
 
+
 class App extends Component {
   render() {
     return (
@@ -15,7 +16,6 @@ class App extends Component {
           <Narrative />
           <Interactive />
           <Inventory />
-
         </div>
       </DungeonMaster>
     );

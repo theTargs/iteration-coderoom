@@ -16,7 +16,8 @@ class Interactive extends Component {
           return (
             <div className="interactive">
               <ButtonContainer />
-              <CodingBox />
+              <CodingBox key={context.keyo}/>
+              {/*<Timer /> */}
             </div>
           )}}
       </DM.Consumer>

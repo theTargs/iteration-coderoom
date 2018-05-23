@@ -47,9 +47,34 @@ try {
     }
 
     break;
+    
   case 2:
+    passed = true;
+
+    try {
+      val = writeStr();
+    } catch (e) {
+      postMessage('no');
+    }
+    if (val !== 'wilbur') {
+      passed = false;
+      break;
+    }
 
     break;
+
+  case 3:
+    passed = true;
+    
+    try {
+      val = addThree(5);
+    } catch (e) {
+      postMessage('no');
+    }
+    if (val !== 8) {
+      passed = false;
+      break;
+    }
 
   default:
     break;
@@ -69,8 +94,9 @@ class DungeonMaster extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      keyo: 0,
       gameStarted: false,
-      checkpoint: [0, [0, 0, 0]],
+      checkpoint: [0, 0, [0, 0, 0]], // current challenge, current level, array of completed challenges
       isHidden: true,
       keysCollected: 0,
       totalTime: 0,
@@ -124,6 +150,8 @@ class DungeonMaster extends Component {
             
 
       goToDesk: () => {
+        this.state.keyo += 1;
+        this.state.checkpoint[0] = 1;
         // start the game
         this.state.gameStarted = true;
         // here we add the relevant narrative text to the active narrative array
@@ -153,8 +181,27 @@ class DungeonMaster extends Component {
       },
       goToNightstand: function() {
         console.log(this.state.startingCode);
+
+        const startTime = new Timer(0);
+        this.setState({
+          startingCode: `function findInArray (arr, elem) {
+// your code here ♥
+            
+}`,
+        });
+
+      },
+      goToNightstand: function() {
+        this.state.keyo += 1;
+        this.state.checkpoint[0] = 2;
+
         // start the game
         this.state.gameStarted = true;
+        this.setState({
+          challengePrompt:
+            "Write a function that returns the string 'wilbur'."
+        });
+
         // here we add the relevant narrative text to the active narrative array
         this.state.activeNarrative.unshift(this.state.text.nightstandText);
         // reset challengeResponseText to an empty string at beginning of challenge
@@ -176,8 +223,27 @@ class DungeonMaster extends Component {
       },
       goToBed: function() {
         console.log(this.state.startingCode);
+        const startTime = new Timer(0);
+        
+        this.setState({startingCode: `function writeStr() {
+// 🍦🍦🍦
+          
+}`});
+      },
+      goToBed: function() {
+        this.state.keyo += 1;
+        this.state.checkpoint[0] = 3;
+
         // start the game
         this.state.gameStarted = true;
+        this.setState({
+          challengePrompt:
+            "Write a function that accepts a number as a parameter. It will return the the sum of the number and three."
+        });
+        this.setState({startingCode: `function addThree(num) {
+// 🌮🌮🌮
+          
+}`});
 
         // here we add the relevant narrative text to the active narrative array
         this.state.activeNarrative.unshift(this.state.text.bedText);
@@ -201,6 +267,19 @@ class DungeonMaster extends Component {
           }`});
       },
       challengeBoss: function() {
+        this.state.keyo += 1;
+        this.state.checkpoint[0] = 4;
+        this.setState({
+          challengePrompt:
+            "Write a function that defeats the boss."
+        });
+        this.setState({startingCode: `function saveWilbur(num) {
+// 😈🔥 😈😈😈🔥😈☄️😈😈 👹😈😈🔥😈😈😈😈👹😈😈😈😈😈
+😈😈👹😈   😈😈 👹😈😈😈🔥   😈 😈😈😈👹😈😈😈🔥😈😈
+🆘🆘🆘Ḁ̷̢̧̨̹̱̫̠̥̔́͗̑̓̀͜H̶̨͉̩̟͑̈̓͌͑̀̾͋̇̂̃H̷̰̰̫̖̜͉͎̹̬̐̉͒́̉̓̔̎̌̕̚͠͠H̷̙̀͆́̐̑̎̍͌̃̊̕̕͠H̸͕͙̲͈͕̩̓̕H̸͇͕̿̈̑̈́̎͂̿̆̓̓͘̕͝ͅḨ̵̛͍̙̜̣̗̰̰̤̖͖͓̱͕͉̊̌̐̄̈́͌͒̉̓͘͠H̶̱̣̖̯̱͎̖̮̠̜͎̪͛͑͋ͅͅḤ̵̡̢̫̦̠͔̬̹̅̑͌̀̈́͑͒͑̊̍͐͘͝ͅ ̶̄̍P̵̨̡̢͓̙̯̼̼̳̖̦͍̆̏́͗͜͠ͅL̶̢̛̹̱̤̦̼̱̖̘̱̰͆̽͊̌̋̚É̷̠̮̹͓͍͒̈̔A̸̻̙̽Ṡ̷̮͍͎̫̟̺̝͍̣̘̮̜͋Ë̵͍̘̟͔̼̝͎̳̯̰͍́̊͌̋̔̎͆̂̊͒̚ ̷͐͘H̵̭̻̪͈̱̫̙̦͓̰̀̈́̇̂̀͑͛̒̾͑͂̕͝͝͝ͅĘ̵̨̢̛̲̲̜̖̣̺̥̤͍̔̔͋̀̓͆̂L̴̤̜͉̲̦̎̋̄͒̒̕̕͜P̴̗̞̪̤̫̙̘͇̲̈̐͋̈̆̉̕͜͝ ̵͐͌̏͑͆M̶̠̺̙̏̉͘Ȅ̴̹̤͍̒̔̈́̈́́̃̃̿̃̕̚͝🐶😱🆘🆘🆘
+😈😈☄️😈😈😈🔥☄ ️😈 😈👹😈😈 😈🔥😈😈😈👹😈😈😈🔥😈😈
+😈😈🔥😈😈👹😈😈 😈😈🔥😈   😈😈👹😈😈☄️😈🔥😈😈😈👹😈
+}`});
         // here we add the relevant narrative text to the active narrative array
         this.state.activeNarrative.unshift(this.state.text.bossChallengeText);
         // reset challengeResponseText to an empty string at beginning of challenge
@@ -223,8 +302,10 @@ class DungeonMaster extends Component {
       },
       challengeActive: true,
       challengePrompt: "",
-      
-      
+      startingCode: `function findInArray (arr, elem) {
+// your code here ♥
+
+}`,
       challengeResponseText: "",
 
       submitTest: function(code) {
@@ -250,9 +331,12 @@ class DungeonMaster extends Component {
       //console.log( e.data, "NO!!" );
 
       if (e.data === 'yes') {
+        // look at the checkpoint array, update the index of the current challenge, set it to completed
+        this.state.checkpoint[2][this.state.checkpoint[0] - 1] = 1;
        // console.log("made it in!");
-        this.state.activeNarrative.push(this.state.text.completionText);
+        this.state.activeNarrative.unshift(this.state.text.completionText);
         this.setState({keysCollected: this.state.keysCollected + 1});
+        if (this.state.keysCollected >= 3) this.state.toggleHidden();
         this.setState({challengeResponseText: 'Nice one!'});
       } else if (e.data === 'no') {
         this.setState({challengeResponseText: 'Try again bud...'});

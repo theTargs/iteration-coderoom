@@ -24,23 +24,34 @@ class ButtonContainer extends Component {
     return (
       <DM.Consumer>
         {context => {
-          let bossBtnVisible = <Button btnLabel={context.bossBtn.text} onClick={context.challengeBoss} disabled={context.bossBtn.disabled} />;
           if (context.isHidden) {
-            bossBtnVisible = <div></div>;
-          }
-          if (context.deskBtn.disabled === true && context.nightstandBtn.disabled === true && context.bedBtn.disabled === true && context.isHidden === true) {
-            context.toggleHidden();
-          }
-          return (
-            <div>
-              {/* ButtonContainer placeholder */}
+            return(
+              <div>
               <Button btnLabel={context.deskBtn.text} onClick={context.goToDesk} disabled={context.deskBtn.disabled} />
               <Button btnLabel={context.nightstandBtn.text} onClick={context.goToNightstand} disabled={context.nightstandBtn.disabled}/>
               <Button btnLabel={context.bedBtn.text} onClick={context.goToBed} disabled={context.bedBtn.disabled}/>
               {bossBtnVisible}
               {/*<Button btnLabel={context.pauseBtn.text} onClick={context.timerPause}/> TIMER PAUSE BUTTON FOR TESTING */}
             </div>
-          )}}
+          );
+
+          // let bossBtnVisible = <Button btnLabel={context.bossBtn.text} onClick={context.challengeBoss} disabled={context.bossBtn.disabled} />;
+          // if (context.isHidden) {
+          //   bossBtnVisible = <div></div>;
+          // }
+          // if (context.deskBtn.disabled === true && context.nightstandBtn.disabled === true && context.bedBtn.disabled === true && context.isHidden === true) {
+          //   context.toggleHidden();
+          // }
+          // return (
+          //   <div>
+          //     {/* ButtonContainer placeholder */}
+          //     <Button btnLabel={context.deskBtn.text} onClick={context.goToDesk} disabled={context.deskBtn.disabled} />
+          //     <Button btnLabel={context.nightstandBtn.text} onClick={context.goToNightstand} disabled={context.nightstandBtn.disabled}/>
+          //     <Button btnLabel={context.bedBtn.text} onClick={context.goToBed} disabled={context.bedBtn.disabled}/>
+          //     {bossBtnVisible}
+          //   </div>
+          // )
+        }}
       </DM.Consumer>
 
     )}
