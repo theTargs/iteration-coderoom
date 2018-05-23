@@ -1,16 +1,6 @@
 import React, { Component } from "react";
 import { DM } from './DungeonMaster';
 
-/*
-Creating a box where the inventory lives.
-Need a variable keysCollected which is the number of keys collected
-
-CSS:
-Off white box.
-Long thin box that appears at the bottom of the screen.
-Box shadow.
-*/
-
 class Inventory extends Component {
     render() {
         return (

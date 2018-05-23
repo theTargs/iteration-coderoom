@@ -63,25 +63,7 @@ var blobURL = window.URL.createObjectURL(blob);
 var myWorker = new Worker(blobURL);
 
 let seconds = 0;
-const incrementTime = () => {
-  seconds++;
-  this.timerOn = false;
-};
-
-const timer = () => {
-  setTimeout(() => {incrementTime(); timer()}, 1000);
-  this.timerOn = true;
-  console.log(seconds);
-};
-
-class Timer{
-  constructor(seconds) {
-    this.seconds = timer();
-    if (this.timerOn === true) {
-      return;
-    }
-  }
-};
+let timerOn = false;
 
 class DungeonMaster extends Component {
   constructor(props) {
@@ -91,6 +73,21 @@ class DungeonMaster extends Component {
       checkpoint: [0, [0, 0, 0]],
       isHidden: true,
       keysCollected: 0,
+      totalTime: 0,
+      seconds: 0,
+      timerOn: false,
+      incrementTime: () => {
+        this.setState({timerOn: true});
+        seconds++;
+      },
+      timer: () => {
+        setTimeout(() => {this.state.incrementTime(); this.state.timer()}, 1000);
+        console.log(seconds);
+      },
+      Timer: () => {
+        this.state.seconds = this.state.timer();
+        
+      },
       text: {
         introText:
           "You wake up to find yourself in a dimly lit room. Wondering where you are you start to explore your small surroundings...",
@@ -108,22 +105,14 @@ class DungeonMaster extends Component {
           "CONGRATULATIONS!!! You have succesfully defeated the Boss Challenge and ESCAPED!!!"
       },
 
-
       activeNarrative: ['You wake up to find yourself in a dimly lit room. Wondering where you are you start to explore your small surroundings...you notice that the desk drawer looks like a good place to find a hint!'],
-
 
       promptText: '',
       deskBtn: {disabled: false, text: 'Check Desk'},
       nightstandBtn: {disabled: false, text: 'Open Nightstand Drawer'},
       bedBtn: {disabled: false, text: 'Look Under Bed'},
       bossBtn: {disabled: false, text: 'Challenge Boss'},
-      
-
-
-      timer: () => {
-        setTimeout(() => {this.state.incrementTime(); this.state.timer()}, 1000)
-      },
-  
+            
 
       goToDesk: () => {
         // start the game
@@ -144,38 +133,63 @@ class DungeonMaster extends Component {
         this.setState({deskBtn: {disabled: true, text: 'Check Desk' }});
 
         //set timer
+        if (this.state.timerOn === true) return
+        else {this.state.Timer();
+        this.state.timerOn = true;};
 
-        const startTime = new Timer(0);
-
+        //set next compiler default screen
+        this.setState({ startingCode: `function () => {
+            
+        }`});
       },
       goToNightstand: function() {
+        console.log(this.state.startingCode);
         // start the game
-
         this.state.gameStarted = true;
-
         // here we add the relevant narrative text to the active narrative array
         this.state.activeNarrative.unshift(this.state.text.nightstandText);
         // reset challengeResponseText to an empty string at beginning of challenge
         this.setState({ challengeResponseText: "" });
-        // set nightstandBtn disabled so it's greyed out
+        //provide a new challenge prompt
+        this.setState({ challengePrompt: "Write a string that evaluates to wilbur:"
+        }),
 
         this.setState({nightstandBtn: {disabled: true, text: 'Open Nightstand Drawer'}});
-        const startTime = new Timer(0);
-        
+        if (this.state.timerOn === true) return
+        else {this.state.Timer();
+          this.setState({timerOn: true});};
+
+        //set next compiler default screen
+        this.setState({ startingCode:
+          `function () => {
+            
+          }`});
       },
       goToBed: function() {
+        console.log(this.state.startingCode);
         // start the game
-
         this.state.gameStarted = true;
 
         // here we add the relevant narrative text to the active narrative array
         this.state.activeNarrative.unshift(this.state.text.bedText);
+        //new prompt
+        this.setState({
+          challengePrompt:
+            "write WILBUR IS THE BEST:"
+        });
         // reset challengeResponseText to an empty string at beginning of challenge
         this.setState({ challengeResponseText: "" });
         // set bedBtn disabled so it's greyed out
 
         this.setState({bedBtn: {disabled: true, text: 'Look Under Bed'}});
-        const startTime = new Timer(0);
+        if (this.state.timerOn === true) return
+        else {this.state.Timer();
+        this.state.timerOn = true;};
+        //set next compiler default screen
+        this.setState({ startingCode:
+          `function () => {
+            
+          }`});
       },
       challengeBoss: function() {
         // here we add the relevant narrative text to the active narrative array
@@ -183,10 +197,6 @@ class DungeonMaster extends Component {
         // reset challengeResponseText to an empty string at beginning of challenge
         this.setState({ challengeResponseText: "" });
         // set bedBtn disabled so it's greyed out
-
-        this.setState({bossBtn: {disabled: true, text: 'Challenge Boss'}});
-        const startTime = new Timer(0);
-
       },
       bossChallengeCompleted: function() {
         // here we add the relevant narrative text to the active narrative array
@@ -194,18 +204,19 @@ class DungeonMaster extends Component {
         // we also need to redirect the player to the winner screen
 
         //total time
-        //how to sum up these values from the different elements of state?
-       // this.setState({challengeTime: });
+        this.setState({totalTime: seconds}); //stop timer and log!!!
+        console.log(this.state.totalTime);
       },
       toggleHidden: function() {
         this.setState({ isHidden: false });
       },
       challengeActive: true,
       challengePrompt: "",
-      startingCode: `function findInArray (arr, elem) {
+      startingCode: `const findInArray = (arr, elem) => {
 // your code here
 
 }`,
+      
       challengeResponseText: "",
 
       submitTest: function(code) {
@@ -216,15 +227,14 @@ class DungeonMaster extends Component {
       }
     };
 
-      challengeTime: 0
-    }
+    this.state.incrementTime = this.state.incrementTime.bind(this);
+    this.state.timer = this.state.timer.bind(this);
+    this.state.Timer = this.state.Timer.bind(this);
     this.state.goToDesk = this.state.goToDesk.bind(this);
     this.state.goToBed = this.state.goToBed.bind(this);
     this.state.goToNightstand = this.state.goToNightstand.bind(this);
     this.state.challengeBoss = this.state.challengeBoss.bind(this);
-    this.state.bossChallengeCompleted = this.state.bossChallengeCompleted.bind(
-      this
-    );
+    this.state.bossChallengeCompleted = this.state.bossChallengeCompleted.bind(this);
     this.state.submitTest = this.state.submitTest.bind(this);
     this.state.toggleHidden = this.state.toggleHidden.bind(this);
     myWorker.onmessage = e => {

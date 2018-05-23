@@ -8,7 +8,6 @@ class Button extends Component {
     return (
       <DM.Consumer>
         {context => {
-          // work?
           return (
             <div>
               <button id="placeholder" className="button" onClick={this.props.onClick} disabled={this.props.disabled}>{this.props.btnLabel}</button>

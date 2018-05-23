@@ -42,9 +42,7 @@ class CodingBox extends Component {
       <DM.Consumer>
         {context => {
           if (!context.challengeActive) return <div className="coding-wrapper">Awaiting challenge...</div>
-          // var doc = editor.getDoc();
-          // console.log(doc);
-          // console.log(doc.getValue());
+
           return (
             <div className="coding-wrapper">
               <center><div id="challenge-text">{context.challengePrompt}</div></center>
